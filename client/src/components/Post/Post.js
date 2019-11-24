@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Posst = props => {
+const Post = props => {
     const { post } = props;
 
     return (
