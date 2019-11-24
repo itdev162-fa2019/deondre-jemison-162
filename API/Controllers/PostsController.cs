@@ -114,7 +114,7 @@ namespace API.Controllers
 
     public ActionResult<bool> Delete(Guid id)
     {
-      var psot = context.posts.Find(id);
+      var post = context.Posts.Find(id);
 
       if (post == null)
       {

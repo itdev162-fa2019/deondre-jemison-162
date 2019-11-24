@@ -8,8 +8,8 @@ import './App.css';
 
 class App extends React.Component {
   state = {
-    posts: []
-    post: null;
+    posts: [],
+    post: null
   }
 
   componentDidMount() {
@@ -24,15 +24,29 @@ class App extends React.Component {
       })
   }
 
-  viewPost = {post} => {
+  viewPost = (post) => {
     console.log(`view ${post.title}`);
     this.setState({
-      post: post;
+      post: post
     });
   }
 
+deletePost = post => {
+  axios
+    .delete('http://localhost:5000/api/posts/${post.id}')
+    .then(response => {
+      const newPosts = this.state.posts.filter(p => p.id !== post.id);
+      this.setState({
+        post: [...newPosts]
+      });
+    })
+    .catch(error => {
+      console.error('Error deleting post: ${error}');
+    });
+};
+
   render() {
-    const { posts } = this.state;
+    const { posts, post } = this.state;
 
     return (
       <Router>
@@ -43,11 +57,15 @@ class App extends React.Component {
           <main className="App-content">
             <Switch>
               <Route exact path="/">
-                <PostList posts={posts} clickPost={this.viewPost} />
+                <PostList
+                posts={posts}
+                clickPost={this.viewPost}
+                deletePost={this.deletePost}
+                />
               </Route>
-              <Route path="/posts/:postId">
-                <Post post={post} />
-              </Route>
+                <Route path="/posts/:postId">
+                  <Post post={post} />
+                </Route>
               </Switch>>
           </main>
         </div>
